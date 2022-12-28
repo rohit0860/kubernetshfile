@@ -1,1 +1,2 @@
 # kubernetshfile
+cloudpractical.live
