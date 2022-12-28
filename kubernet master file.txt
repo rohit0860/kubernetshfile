@@ -1,0 +1,39 @@
+#!/bin/bash
+sudo yum update -y
+sudo yum install docker -y 
+sudo systemctl enable docker && systemctl start docker
+
+sudo touch /etc/yum.repos.d/kubernetes.repo
+sudo chmod 777 /etc/yum.repos.d/kubernetes.repo
+echo "[kubernetes]" > /etc/yum.repos.d/kubernetes.repo
+echo "name=Kubernetes" >> /etc/yum.repos.d/kubernetes.repo
+echo "baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64" >> /etc/yum.repos.d/kubernetes.repo
+echo "enabled=1" >>/etc/yum.repos.d/kubernetes.repo
+echo "gpgcheck=1" >>/etc/yum.repos.d/kubernetes.repo
+echo "repo_gpgcheck=0" >> /etc/yum.repos.d/kubernetes.repo
+echo "gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" >> /etc/yum.repos.d/kubernetes.repo
+echo "exclude=kube*" >>/etc/yum.repos.d/kubernetes.repo
+
+sudo touch /etc/sysctl.d/k8s.conf
+sudo chmod 777 /etc/sysctl.d/k8s.conf
+echo "net.bridge.bridge-nf-call-ip6tables = 1" > /etc/sysctl.d/k8s.conf
+echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.d/k8s.conf
+echo "EOF" >> /etc/sysctl.d/k8s.conf
+echo "sysctl --system" >> /etc/sysctl.d/k8s.conf
+echo "setenforce 0" >> /etc/sysctl.d/k8s.conf
+
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes 
+sudo systemctl enable kubelet && systemctl start kubelet
+
+sudo systemctl enable docker && systemctl start docker
+sudo systemctl enable kubelet && systemctl start kubelet
+
+sudo kubeadm init --ignore-preflight-errors=all
+
+
+
+
+
+
+
+

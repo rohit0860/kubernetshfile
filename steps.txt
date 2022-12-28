@@ -1,0 +1,30 @@
+***	Must follow :-" Copy  WORKER-NODE Security-group-ID  & Paste in MASTER-NODE Security-group-ID in TCP port at 6443"
+
+ ***	Run below commands in both (WORKER-NODE && MASTER-NODE):-
+			sudo su
+
+
+1. Copy content from " kubernet master file " & save using ".sh" extention in your MASTER-NODE(t2.medium).
+
+2. Copy content from " worker node file " & save using ".sh" extention in your WORKER-NODE(t2.micro/small/medium).
+
+3. Give executable permission to both above files in your resprctive instance (using 'sudo chmod 777 filename).
+
+4. Execute both shellscript files in yur respective instance.
+
+5.Run below commands in  MASTER-NODE:-
+		export KUBECONFIG=/etc/kubernetes/admin.conf
+
+6.Then copy the join command from MASTER-NODE.
+
+7. Paste join command in WORKER-NODE.
+
+8. Run this command in MASTER-NODE 
+	" sudo kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml ".
+
+9. Run below commands in both (WORKER-NODE && MASTER-NODE):-
+			sudo service kubelet restart
+
+10. wait 1 min 
+
+11. Now run "kubectl get nodes" in MASTER-NODE to check  your node ready .
